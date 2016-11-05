@@ -3,7 +3,7 @@ import logging
 import os
 
 import gensim
-from nltk.corpus import reuters as rt
+from nltk.corpus import reuters
 from utils import INPUTS_DIR, TESTING_SET, TRAINING_SET, preprocess_document
 
 logging.basicConfig(
@@ -16,6 +16,6 @@ dictionary = ldamodel.id2word
 
 for i in TRAINING_SET + TESTING_SET:
     logging.info(i)
-    bow = dictionary.doc2bow(preprocess_document(rt.raw(i)))
+    bow = dictionary.doc2bow(preprocess_document(reuters.raw(i)))
     with open(os.path.join(INPUTS_DIR, i), 'w+') as f:
         json.dump(dict(bow), f)

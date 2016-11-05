@@ -8,7 +8,7 @@ if [[ -z $NUM_TOPICS ]]; then
 fi
 
 if [[ -n $GENERATE_INPUTS ]]; then
-	python gen_input.py  # ensure that there is an lda somewhere to give the script a dictionary object
+	python generate_input.py  # ensure that there is an lda somewhere to give the script a dictionary object
 fi
 
 if [[ -z $OUTPUTS_DIR ]]; then
@@ -22,29 +22,29 @@ export _2NN_MODEL="./models/dnn/trained_2nn_${NUM_TOPICS}.txt"
 export _3NN_MODEL="./models/dnn/trained_3nn_${NUM_TOPICS}.txt"
 
 if [[ -n $EVALUATE_ONLY ]];then
-	python gen_lda_output.py
+	python generate_lda_output.py
 	python svm.py > lda_accuracy_${NUM_TOPICS}
 	export DNN_MODEL=$_2NN_MODEL
-	python gen_dnn_output.py
+	python generate_dnn_output.py
 	python svm.py > 2nn_accuracy_${NUM_TOPICS}
 	export DNN_MODEL=$_3NN_MODEL
-	python gen_dnn_output.py
+	python generate_dnn_output.py
 	python svm.py > 3nn_accuracy_${NUM_TOPICS}
 	exit
 fi
 
-python lda.py && python gen_lda_output.py
+python lda.py && python generate_lda_output.py
 
 python svm.py > lda_accuracy_${NUM_TOPICS}
 
 export DNN_MODEL=$_2NN_MODEL
 
-python 2nn.py && python gen_dnn_output.py
+python 2nn.py && python generate_dnn_output.py
 
 python svm.py > 2nn_accuracy_${NUM_TOPICS}
 
 export DNN_MODEL=$_3NN_MODEL
 
-python 3nn.py && python gen_dnn_output.py
+python 3nn.py && python generate_dnn_output.py
 
 python svm.py > 3nn_accuracy_${NUM_TOPICS}

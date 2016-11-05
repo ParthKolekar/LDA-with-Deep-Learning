@@ -2,7 +2,7 @@ import logging
 import os
 
 import gensim
-from nltk.corpus import reuters as rt
+from nltk.corpus import reuters
 from utils import TRAINING_SET, preprocess_document
 
 NUM_TOPICS = int(os.environ.get('NUM_TOPICS', 20))
@@ -20,7 +20,7 @@ words_list = list(
     map(
         preprocess_document,
         map(
-            lambda x: rt.raw(x),
+            lambda x: reuters.raw(x),
             TRAINING_SET
         )
     )

@@ -3,7 +3,7 @@ import os
 
 import gensim
 import keras
-import numpy as np
+import numpy
 from utils import INPUTS_DIR, OUTPUTS_DIR, TRAINING_SET
 
 ldamodel = gensim.models.ldamulticore.LdaMulticore.load(os.environ.get('LDA_MODEL', './models/lda/trained_lda.txt'))
@@ -13,17 +13,17 @@ X = []
 for i in TRAINING_SET:
     with open(os.path.join(INPUTS_DIR, i)) as f:
         d = json.load(f)
-    empty = np.zeros(len(dictionary))
+    empty = numpy.zeros(len(dictionary))
     for k, v in d.items():
         empty[int(k)] = float(v)
     X.append(empty)
-X = np.array(X)
+X = numpy.array(X)
 
 Y = []
 for i in TRAINING_SET:
     with open(os.path.join(OUTPUTS_DIR, i)) as f:
         Y.append(json.load(f))
-Y = np.array(Y)
+Y = numpy.array(Y)
 
 dnnmodel = keras.models.Sequential()
 dnnmodel.add(keras.layers.Dense(ldamodel.num_topics * 3, input_dim=len(dictionary), activation='tanh'))

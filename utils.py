@@ -6,14 +6,14 @@ import html
 
 import nltk
 from gensim.parsing.preprocessing import STOPWORDS
-from nltk.corpus import reuters as rt
-from nltk.corpus import stopwords as st
+from nltk.corpus import reuters
+from nltk.corpus import stopwords
 from stop_words import get_stop_words
 
-LOT_OF_STOPWORDS = frozenset(list(STOPWORDS) + get_stop_words('en') + st.words('english'))
+LOT_OF_STOPWORDS = frozenset(list(STOPWORDS) + get_stop_words('en') + stopwords.words('english'))
 
-TRAINING_SET = list(filter(lambda x: x.startswith('train'), rt.fileids()))
-TESTING_SET = list(filter(lambda x: x.startswith('test'), rt.fileids()))
+TRAINING_SET = list(filter(lambda x: x.startswith('train'), reuters.fileids()))
+TESTING_SET = list(filter(lambda x: x.startswith('test'), reuters.fileids()))
 
 INPUTS_DIR = os.environ.get('INPUTS_DIR', 'inputs')
 OUTPUTS_DIR = os.environ.get('OUTPUTS_DIR', 'outputs')

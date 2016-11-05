@@ -1,6 +1,6 @@
 import keras, gensim
-from nltk.corpus import reuters as rt
-import numpy as np
+from nltk.corpus import reuters
+import numpy
 from utils import preprocess_document
 
 for ntopics in range(10,110,10):
@@ -12,15 +12,15 @@ for ntopics in range(10,110,10):
 
     dictionary = lda_model.id2word
 
-    for raw_text in map(lambda x: rt.raw(x), rt.fileids()):
+    for raw_text in map(lambda x: reuters.raw(x), reuters.fileids()):
 
         bow = dictionary.doc2bow(preprocess_document(raw_text))
-        full_bow = np.zeros( (len(dictionary),1) )
+        full_bow = numpy.zeros( (len(dictionary),1) )
         for k, v in dict(bow).items():
             full_bow[int(k)] = int(v)
 
         td = lda_model[bow]
-        full_td_lda = np.zeros((ntopics,1))
+        full_td_lda = numpy.zeros((ntopics,1))
         for k, v in dict(td).items():
             full_td_lda[int(k)] = float(v)
         full_td_lda = full_td_lda.transpose()
@@ -28,7 +28,7 @@ for ntopics in range(10,110,10):
         full_td_dnn2 = dnn2_model.predict(full_bow.transpose())
         full_td_dnn3 = dnn3_model.predict(full_bow.transpose())
         
-        kld2 = np.sum(np.where(full_td_lda != 0, full_td_lda * np.log(full_td_lda / full_td_dnn2), 0))
-        kld3 = np.sum(np.where(full_td_lda != 0, full_td_lda * np.log(full_td_lda / full_td_dnn3), 0))
+        kld2 = numpy.sum(numpy.where(full_td_lda != 0, full_td_lda * numpy.log(full_td_lda / full_td_dnn2), 0))
+        kld3 = numpy.sum(numpy.where(full_td_lda != 0, full_td_lda * numpy.log(full_td_lda / full_td_dnn3), 0))
         print("wrt dnn2: ", kld2)
         print("wrt dnn3: ", kld3)
